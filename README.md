@@ -5,12 +5,12 @@
 
 
 ### Guarantees:
-    - messages are not durable (by default)
-        - can overflow messages to disk (hint: set overflow to 0!)
-    - _at least once_ delivery
-    - messages received are _un-ordered_
-    - "consumers eventually find all topic producers"
-        - consequence/feature in avoiding single point of failure in a distributed fashion
+- messages are not durable (by default)
+ - can overflow messages to disk (hint: set overflow to 0!)
+- _at least once_ delivery
+- messages received are _un-ordered_
+- "consumers eventually find all topic producers"
+ - consequence/feature in avoiding single point of failure in a distributed fashion
 
 
 ## A small example to what you can use queueing and nsq for!
@@ -22,5 +22,10 @@
     - store it in the db
 
 producer:
-    run  
+    go run main.go
+    
+consumer:
+    cd client
+    go run main.go
+
 
