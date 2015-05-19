@@ -2,18 +2,19 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/bitly/go-nsq"
+	"github.com/codegangsta/negroni"
 	"github.com/esiqveland/queuetutor/models"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"github.com/bitly/go-nsq"
-	"github.com/codegangsta/negroni"
 )
 
 type appContext struct {
 	producer *nsq.Producer
 }
+
 func main() {
 	qconfig := nsq.NewConfig()
 	w, err := nsq.NewProducer("127.0.0.1:4150", qconfig)
@@ -25,7 +26,7 @@ func main() {
 
 	mw := negroni.Classic()
 	router := mux.NewRouter()
-    router.
+	router.
 		HandleFunc("/applications/submit", context.SubmitApplication).
 		Methods("POST")
 
