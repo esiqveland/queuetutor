@@ -22,9 +22,11 @@
     - store it in the db
 
 producer:
+
     go run main.go
     
 consumer:
+
     cd client
     go run main.go
 
