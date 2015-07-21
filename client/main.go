@@ -4,6 +4,8 @@ import (
 	"github.com/bitly/go-nsq"
 	"log"
 	"sync"
+	"encoding/json"
+	"github.com/esiqveland/queuetutor/models"
 )
 
 const applications_submitted = "application.submit"
@@ -20,6 +22,12 @@ func main() {
 		log.Printf("Got a message: %v", message)
 		log.Printf("ID: %v Body: '%v", message.ID, string(message.Body))
 
+		app := models.Application{}
+		err := json.Unmarshal(message.Body, &app)
+		if err != nil { // maybe do something else here? put it on a failed application queue for manual inspection?
+			return err
+		}
+
 		wg.Done()
 		return nil
 	}))
@@ -30,4 +38,12 @@ func main() {
 	}
 
 	wg.Wait()
+}
+
+func noopHandler() {
+	// app = &application{} // *application (pointer)
+
+	return // notice pointer did not escape scope
+	// this is taken advantage of by the compiler and not add pointer to garbage collection,
+	// but cleans it up from stack when leaving the scope
 }

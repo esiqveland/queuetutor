@@ -3,7 +3,7 @@
  - Naming Sucks Queue, 
  - New Simple Queue
 
-Prereq: a running NSQ "stack"
+Pre req: a running NSQ "stack"
 
     $ nsqlookupd & 
     $ nsqd --lookupd-tcp-address=127.0.0.1:4160 &

@@ -24,7 +24,9 @@ func main() {
 
 	context := &appContext{w}
 
+	// gives a middleware stack with recover() and logging
 	mw := negroni.Classic()
+
 	router := mux.NewRouter()
 	router.
 		HandleFunc("/applications/submit", context.SubmitApplication).
@@ -41,6 +43,7 @@ func (c *appContext) SubmitApplication(w http.ResponseWriter, r *http.Request) {
 		fail(w, "invalid payload")
 		return
 	}
+
 	app := models.Application{}
 	err = json.Unmarshal(data, &app)
 	if err != nil {
@@ -53,6 +56,7 @@ func (c *appContext) SubmitApplication(w http.ResponseWriter, r *http.Request) {
 		fail(w, "invalid application data")
 		return
 	}
+
 	err = c.producer.Publish("application.submit", data)
 	if err != nil {
 		log.Printf("error publishing application %v", err)
@@ -62,10 +66,12 @@ func (c *appContext) SubmitApplication(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(201)
 }
+
 func failS(w http.ResponseWriter, status int, msg string) {
 	w.WriteHeader(status)
 	w.Write([]byte(msg))
 }
+
 func fail(w http.ResponseWriter, msg string) {
 	failS(w, 400, msg)
 }
